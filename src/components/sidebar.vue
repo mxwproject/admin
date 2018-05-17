@@ -6,8 +6,8 @@
                     <Icon :type="list.icon"></Icon>
                     <span class="layout-text">{{list.title}}</span>
                 </template>
-                <router-link v-for="(item ,i) in list.pathTo" :to=item.path  :key="item.text">
-                    <MenuItem :name="item.name">
+                <router-link v-for="item in list.pathTo" :to=item.path  :key="item.text">
+                    <MenuItem :name=item.name>
                         <span class="layout-text">{{item.text}}</span>
                     </MenuItem>
                 </router-link>
@@ -22,19 +22,22 @@ export default {
         return {
             lists : [
                 {   
-                    name: "1-1",
+                    name: "1",
                     icon : "person-stalker",
                     title : "订单管理",
                     pathTo : [
                         {
+                            name: "1-1",
                             path : "/nosend",
                             text : "未发货订单"
                         },
                         {
+                            name: "1-2",
                             path : "/send",
                             text : "已发货订单" 
                         },
                         {
+                            name: "1-3",
                             path : "/finish",
                             text : "已完成订单"
                         }
