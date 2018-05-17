@@ -1,12 +1,17 @@
 <template>
     <Sider ref="side1"  hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" :class="menuitemClasses">
         <Menu active-name="1-1"  theme="dark" width="auto" :accordion="true" :v-model="lists"> 
-            <router-link v-for="(list) in lists" :to=list.pathTo  :key="list.title">
-                <MenuItem :name="list.name">
-                    <Icon class="nav_1" :type="list.icon"></Icon>
+            <Submenu v-for="(list ,index) in lists" :name="list.name" :key="index">
+                <template class="nav_1" slot="title">
+                    <Icon :type="list.icon"></Icon>
                     <span class="layout-text">{{list.title}}</span>
-                </MenuItem>
-            </router-link>
+                </template>
+                <router-link v-for="(item ,i) in list.pathTo" :to=item.path  :key="item.text">
+                    <MenuItem :name="item.name">
+                        <span class="layout-text">{{item.text}}</span>
+                    </MenuItem>
+                </router-link>
+            </Submenu>
         </Menu>
     </Sider>
 </template>
@@ -19,8 +24,21 @@ export default {
                 {   
                     name: "1-1",
                     icon : "person-stalker",
-                    title : "首页",
-                    pathTo :"/article"
+                    title : "订单管理",
+                    pathTo : [
+                        {
+                            path : "/nosend",
+                            text : "未发货订单"
+                        },
+                        {
+                            path : "/send",
+                            text : "已发货订单" 
+                        },
+                        {
+                            path : "/finish",
+                            text : "已完成订单"
+                        }
+                    ]
                 }
             ],
             isCollapsed :false
@@ -55,7 +73,7 @@ export default {
     }
     .menu-item span{
         display: inline-block;
-        overflow: hidden;
+        /* overflow: hidden; */
         width: 69px;
         text-overflow: ellipsis;
         white-space: nowrap;
