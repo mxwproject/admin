@@ -2,7 +2,7 @@
     <div class="loginInfo">
         <Form :model="user" class="loginForm"  :label-width="80">
             <div class="title-container">
-                <h3 class="title">后台系统</h3>
+                <h3 class="title">后台登录系统</h3>
             </div>
             <FormItem class="admin">
                 <Icon class="nav_1" type="person"></Icon>
@@ -34,13 +34,17 @@ export default {
     },
     methods : {
         loginBtnClick () {
-            axios.defaults.withCredentials = true
-            axios.post(`http://localhost:3000/api/admin_log`, {
-                "name" : this.user.name,
-                "password" : this.user.mima
+            axios.post(`http://wwlin.cn/api/login`, {
+                account : this.user.name,
+                password : this.user.mima
             }).then((res) => {
-                console.log(res)
-                window.location.href = "/#/" 
+                if(res.data.code === 1 ) {
+                    localStorage.setItem('jwtToken', res.data.data.token);
+                    localStorage.setItem('expire', res.data.data.expire);
+                    window.location.href = "/#/" 
+                }else{
+                    this.$Message.info(res.data.msg);
+                }
             })
         },
         iptChange() {
